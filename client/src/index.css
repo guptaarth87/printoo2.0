@@ -1,0 +1,10 @@
+.body{
+    font-family:  Montserrat;
+}
+.white{
+    color:white;
+}
+
+.background-clr{
+background: linear-gradient(180deg, #5A7D9F 0%, #79A4BC 100%);
+}

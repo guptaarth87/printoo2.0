@@ -1,0 +1,73 @@
+/* Ensure the FAQ container is centered and content is styled properly */
+
+.faq-containerx {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 900px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.faq-titlex {
+  font-family: "WorkSans-Bold", sans-serif;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.star-iconx {
+  color: rgb(71, 107, 157) ;
+  margin-right: 10px;
+}
+
+.faq-itemx {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.faq-headerx {
+  font-family: "WorkSans-SemiBold", sans-serif;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-headerx.open {
+  background-color: #e0e0e0;
+}
+
+.faq-contentx {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+  padding-left: 10px;
+}
+
+.faq-contentx p {
+  font-family: "WorkSans-Regular", sans-serif;
+  font-size: 16px;
+  color: #555;
+  margin-top: 10px;
+}
+
+.toggle-iconx {
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(71, 107, 157) ;
+}
+
+.text-muted {
+  font-size: 0.9rem;
+  color: #666;
+}

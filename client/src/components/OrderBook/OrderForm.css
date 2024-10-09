@@ -1,0 +1,87 @@
+.inputlabeltext{
+    color: #5A7D9F;
+    font-size: 15px;
+    font-weight: 600;
+}
+/* Form container */
+.containerx {
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* General form styling */
+  .inputlabeltext {
+    font-weight: bold;
+    color: #5A7D9F;
+  }
+  
+  .form-control {
+    border-radius: 5px;
+    border: 1px solid #d9d9d9;
+    padding: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-control:focus {
+    border-color: #5A7D9F;
+    box-shadow: none;
+  }
+  
+  .btn-primary, .btn-success {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 5px;
+    background-color: #5A7D9F;
+    border: none;
+  }
+  
+  .btn-primary:hover, .btn-success:hover {
+    background-color: #4A6A85;
+  }
+  
+  /* Dashed boundary for file upload */
+  .file-upload-box {
+    border: 2px dashed #5A7D9F;
+    padding: 20px;
+    text-align: center;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+  }
+  
+  .file-upload-box p {
+    font-size: 16px;
+    color: #5A7D9F;
+  }
+  
+  .file-upload-box span {
+    color: #1C6E8C;
+    font-weight: bold;
+  }
+  
+  .file-upload-box:hover {
+    border-color: #4A6A85;
+    background-color: #ffffff;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .container {
+      width: 90%;
+    }
+  
+    .btn-primary, .btn-success {
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .form-control, .btn-primary, .btn-success {
+      font-size: 14px;
+    }
+  }
+  

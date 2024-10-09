@@ -1,0 +1,65 @@
+.slot-chart-container {
+    padding: 20px;
+  }
+  
+  .slot-table {
+    /* Example gradient */
+    color:white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .slot-header {
+    
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0;
+    
+  }
+  
+  .slot-header-item {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  
+  .slot-row {
+    padding: 15px 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .slot-row:last-child {
+    border-bottom: none;
+  }
+  
+  .slot-cell {
+    text-align: center;
+    font-size: 1.1rem;
+   
+  }
+  
+  .slot-cell p {
+    margin: 0;
+    
+  }
+  
+  .slot-cell:first-child {
+    font-weight: bold;
+    
+  }
+  
+  .slot-cell {
+    padding: 10px;
+  }
+  
+  .text-muted {
+    font-size: 0.9rem;
+  }
+  .note-text{
+       font-size: 0.9rem;
+    color:white
+  }
+  .mt-4 {
+    margin-top: 1.5rem;
+  }
+  

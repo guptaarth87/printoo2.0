@@ -1,0 +1,29 @@
+/* PriceChart.css */
+.price-chart {
+     /* Gradient Background */
+    border-radius: 36.771px; /* Rounded corners */
+    padding: 20px;
+    color: #fff;
+  }
+  
+  .price-chart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .price-chart-item:last-child {
+    margin-bottom: 0;
+  }
+  
+  .separator {
+    width: 100%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.2); /* Separator line */
+    margin: 10px 0;
+  }
+  
