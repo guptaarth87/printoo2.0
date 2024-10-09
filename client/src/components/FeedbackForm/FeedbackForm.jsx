@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loader from '../Loader/Loader'; // A component that handles the loading state
-import './feedbackform.css'; // Custom styles for the feedback form
+import './FeedbackForm.css'; // Custom styles for the feedback form
 import API_URL from '../../_helpers';
 import { useNavigate } from 'react-router-dom';
 
