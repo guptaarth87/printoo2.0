@@ -6,7 +6,7 @@ import Index from './pages/Index';
 import Footer from './components/Footer/Footer';
 import BookingPage from './pages/BookingPage';
 import Signin from './components/Auth/Signin';
-import Signup from './components/Auth/SignUp';
+import Signup from './components/Auth/Signup';
 import FeedbackForm from './components/FeedbackForm/FeedbackForm';
 import OrderDetails from './pages/OrderDetails';
 import Navbar from './components/Navbar/Navbar';
