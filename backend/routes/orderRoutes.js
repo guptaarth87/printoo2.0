@@ -81,6 +81,8 @@ router.post('/createorder', async (req, res) => {
     deliveryslot,
     typeOfOrder,
     address,
+    branch,
+    year,
     price,
     paymentdata,
     black_and_white_fileurl = null,  // Default to null if not present
@@ -91,7 +93,7 @@ router.post('/createorder', async (req, res) => {
   
   try {
     // Validate the incoming request data
-    if (!uname ||!email || !phoneno || !deliveryslot || !typeOfOrder || !address || !price || !paymentdata || delivered === undefined) {
+    if (!uname ||!email || !phoneno || !deliveryslot || !typeOfOrder || !address || !branch || !year || !price || !paymentdata || delivered === undefined) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
@@ -103,6 +105,8 @@ router.post('/createorder', async (req, res) => {
       deliveryslot,
       typeOfOrder,
       address,
+      branch,
+      year,
       price,
       paymentdata,
       black_and_white_fileurl,

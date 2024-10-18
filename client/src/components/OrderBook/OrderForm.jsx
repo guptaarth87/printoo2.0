@@ -22,6 +22,9 @@ const OrderForm = () => {
   const [donePayment, setDonePayment] = useState(false);
   const navigate = useNavigate(); // Use useNavigate instead of useHistory
   const [uemail, setuemail] = useState('');
+  const [previousBlackAndWhitePrice, setPreviousBlackAndWhitePrice] = useState(0);
+const [previousColorPrice, setPreviousColorPrice] = useState(0);
+
   useEffect(() => {
     const temail = Cookies.get('printouseremail');
     setuemail(temail)
@@ -33,28 +36,45 @@ const OrderForm = () => {
   const handleBlackAndWhiteUpload = async (e) => {
     const selectedFile = e.target.files[0];
     setBlackAndWhiteFile(selectedFile);
-    
+  
+    // Read the PDF and calculate the total pages
     const pdfData = await selectedFile.arrayBuffer();
     const pdfDoc = await PDFDocument.load(pdfData);
     const totalPages = pdfDoc.getPageCount();
-    
-    setBlackAndWhitePageCount(totalPages);
+  
+    // Calculate the price for black and white
     const blackAndWhitePrice = totalPages * 2; // ₹2 per page for black and white
-    setPrice((prevPrice) => prevPrice + blackAndWhitePrice);
+  
+    // Subtract the previous black and white price from the total
+    setPrice((prevPrice) => prevPrice - previousBlackAndWhitePrice + blackAndWhitePrice);
+  
+    // Update the previous black and white price with the new price
+    setPreviousBlackAndWhitePrice(blackAndWhitePrice);
+  
+    // Optionally, update the page count state
+    setBlackAndWhitePageCount(totalPages);
   };
-
-  // Handle Color PDF Upload
+  
   const handleColorUpload = async (e) => {
     const selectedFile = e.target.files[0];
     setColorFile(selectedFile);
-    
+  
+    // Read the PDF and calculate the total pages
     const pdfData = await selectedFile.arrayBuffer();
     const pdfDoc = await PDFDocument.load(pdfData);
     const totalPages = pdfDoc.getPageCount();
-    
-    setColorPageCount(totalPages);
+  
+    // Calculate the price for color
     const colorPrice = totalPages * 4; // ₹4 per page for color
-    setPrice((prevPrice) => prevPrice + colorPrice);
+  
+    // Subtract the previous color price from the total
+    setPrice((prevPrice) => prevPrice - previousColorPrice + colorPrice);
+  
+    // Update the previous color price with the new price
+    setPreviousColorPrice(colorPrice);
+  
+    // Optionally, update the page count state
+    setColorPageCount(totalPages);
   };
 
   // Handle Form Submission
@@ -89,7 +109,9 @@ const OrderForm = () => {
         // colorFileUrl = await getDownloadURL(colorUploadTask.snapshot.ref);
         colorFileUrl ="djbfjdbvdb"
       }
-      
+      console.log(data.address);
+      // branch: data.branch,
+       // year: data.year,
       // Create the order object
       const orderData = {
         createdAt: new Date(),
@@ -99,6 +121,7 @@ const OrderForm = () => {
         deliveryslot: data.deliveryslot,
         typeOfOrder: data.typeOfOrder,
         address: data.address,
+        
         price: price,
         paymentdata: { amount: price },
         black_and_white_fileurl: blackAndWhiteFileUrl,
@@ -148,7 +171,9 @@ const OrderForm = () => {
       <input
         type="email"
         className="form-control"
-        {...register('email',{ required: true })}
+        defaultValue={uemail}  // Autofill the email from state
+        {...register('email', { required: true })}
+        readOnly  
        
       />
       {errors.email && <span className="text-danger">Email is required</span>}
@@ -182,6 +207,45 @@ const OrderForm = () => {
       />
       {errors.address && <span className="text-danger">Address is required</span>}
     </div>
+    <div className="mb-3">
+  <label className="inputlabeltext">*Branch Name</label>
+  <select
+    className="form-control"
+    {...register('branch', { required: true })}
+  >
+    <option value="">Select Branch</option>
+    <option value="engineering-cse">Engineering - CSE</option>
+    <option value="engineering-mechanical">Engineering - Mechanical</option>
+    <option value="engineering-civil">Engineering - Civil</option>
+    <option value="engineering-electrical">Engineering - Electrical</option>
+    <option value="mtech">MTech</option>
+    <option value="pharmacy">Pharmacy</option>
+    <option value="agriculture">Agriculture</option>
+    <option value="bba">BBA</option>
+    <option value="mba">MBA</option>
+    <option value="bsc">BSc</option>
+    <option value="forensic">Forensic</option>
+    <option value="bca">BCA</option>
+    <option value="mca">MCA</option>
+    <option value="other">Other</option>
+  </select>
+  {errors.branch && <span className="text-danger">Branch is required</span>}
+</div>
+
+<div className="mb-3">
+  <label className="inputlabeltext">*Year</label>
+  <select
+    className="form-control"
+    {...register('year', { required: true })}
+  >
+    <option value="">Select Year</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </select>
+  {errors.year && <span className="text-danger">Year is required</span>}
+</div>
 
     <div className="mb-3">
       <label className="inputlabeltext">*Delivery Slot</label>

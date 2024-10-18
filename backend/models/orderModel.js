@@ -8,6 +8,8 @@ const orderSchema = new mongoose.Schema({
   deliveryslot: { type: String, required: true },
   typeOfOrder: { type: String, required: true },
   address: { type: String, required: true },
+  branch:{ type: String, required: true },
+  year: { type: String, required: true },
   price: { type: Number, required: true },
   paymentdata: { type: Object, required: true },
   black_and_white_fileurl: { type: String, default: null },
