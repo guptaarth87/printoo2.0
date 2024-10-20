@@ -74,6 +74,7 @@ router.delete('/deleteorder/:id', async (req, res) => {
 });
 
 router.post('/createorder', async (req, res) => {
+  console.log("create req")
   const {
     uname,
     email,

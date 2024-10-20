@@ -121,7 +121,8 @@ const [previousColorPrice, setPreviousColorPrice] = useState(0);
         deliveryslot: data.deliveryslot,
         typeOfOrder: data.typeOfOrder,
         address: data.address,
-        
+        branch: data.branch,
+        year: data.year,
         price: price,
         paymentdata: { amount: price },
         black_and_white_fileurl: blackAndWhiteFileUrl,
@@ -171,9 +172,9 @@ const [previousColorPrice, setPreviousColorPrice] = useState(0);
       <input
         type="email"
         className="form-control"
-        defaultValue={uemail}  // Autofill the email from state
+        // defaultValue={uemail}  // Autofill the email from state
         {...register('email', { required: true })}
-        readOnly  
+        // readOnly  
        
       />
       {errors.email && <span className="text-danger">Email is required</span>}
