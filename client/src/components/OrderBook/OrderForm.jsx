@@ -1,15 +1,17 @@
 import React, { useState , useEffect} from 'react';
 import { useForm } from 'react-hook-form';
-// import { storage, db } from '../../FirebaseConfig';
-// import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-// import { collection, addDoc } from 'firebase/firestore';
+import { storage, db } from '../../FirebaseConfig';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { collection, addDoc } from 'firebase/firestore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import API_URL from '../../_helpers';
 import './OrderForm.css';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { Link } from 'react-router-dom';
+import { addPage } from './addPage';
 
 const OrderForm = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -23,7 +25,7 @@ const OrderForm = () => {
   const navigate = useNavigate(); // Use useNavigate instead of useHistory
   const [uemail, setuemail] = useState('');
   const [previousBlackAndWhitePrice, setPreviousBlackAndWhitePrice] = useState(0);
-const [previousColorPrice, setPreviousColorPrice] = useState(0);
+  const [previousColorPrice, setPreviousColorPrice] = useState(0);
 
   useEffect(() => {
     const temail = Cookies.get('printouseremail');
@@ -32,6 +34,20 @@ const [previousColorPrice, setPreviousColorPrice] = useState(0);
       navigate('/signin'); // Redirect to home if email is found in cookies
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = ''; // Necessary for showing the alert
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Cleanup on component unmount
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
   // Handle Black and White PDF Upload
   const handleBlackAndWhiteUpload = async (e) => {
     const selectedFile = e.target.files[0];
@@ -90,24 +106,38 @@ const [previousColorPrice, setPreviousColorPrice] = useState(0);
       let blackAndWhiteFileUrl = null;
       let colorFileUrl = null;
       
+     
       // Upload Black and White File if present
       if (blackAndWhiteFile) {
-        console.log("hello")
+        const modifiedBlackAndWhiteFile = await addPage(blackAndWhiteFile, data);
+        const blackAndWhiteStorageRef = ref(storage, `orders/black_and_white/${blackAndWhiteFile.name}`);
+        const blackAndWhiteUploadTask = uploadBytesResumable(blackAndWhiteStorageRef, modifiedBlackAndWhiteFile);
+        await blackAndWhiteUploadTask;
+        blackAndWhiteFileUrl = await getDownloadURL(blackAndWhiteUploadTask.snapshot.ref);
+       
+       
         // const blackAndWhiteStorageRef = ref(storage, `orders/black_and_white/${blackAndWhiteFile.name}`);
         // const blackAndWhiteUploadTask = uploadBytesResumable(blackAndWhiteStorageRef, blackAndWhiteFile);
         // await blackAndWhiteUploadTask;
         // blackAndWhiteFileUrl = await getDownloadURL(blackAndWhiteUploadTask.snapshot.ref);
-        blackAndWhiteFileUrl="kdknvkdnv" 
+       
         
       }
 
       // Upload Color File if present
       if (colorFile) {
+       
+        const modifiedColorFile = await addPage(colorFile, data);
+      const colorStorageRef = ref(storage, `orders/color/${colorFile.name}`);
+      const colorUploadTask = uploadBytesResumable(colorStorageRef, modifiedColorFile);
+      await colorUploadTask;
+      colorFileUrl = await getDownloadURL(colorUploadTask.snapshot.ref);
+
         // const colorStorageRef = ref(storage, `orders/color/${colorFile.name}`);
         // const colorUploadTask = uploadBytesResumable(colorStorageRef, colorFile);
         // await colorUploadTask;
         // colorFileUrl = await getDownloadURL(colorUploadTask.snapshot.ref);
-        colorFileUrl ="djbfjdbvdb"
+       
       }
       console.log(data.address);
       // branch: data.branch,
@@ -131,7 +161,7 @@ const [previousColorPrice, setPreviousColorPrice] = useState(0);
       };
      
       // Save the order to Firestore (or send to your backend)
-      // await addDoc(collection(db, 'orders'), orderData);
+      await addDoc(collection(db, 'orders'), orderData);
 
       // Send to Node.js backend
       const response = await fetch(`${API_URL}/orders/createorder`, {
@@ -156,6 +186,8 @@ const [previousColorPrice, setPreviousColorPrice] = useState(0);
   return (
     <div className="container containerx mt-5" style={{ maxWidth: '600px' }}>
   <h3 className="text-center mb-4" style={{ color: '#5A7D9F' }}>Place Your Order</h3>
+  <h6 className="text-center mb-4" style={{ color: '#5A7D9F' }}>Want to Merge PDF's? <Link to='/tools'>Click here</Link> </h6>
+  
   <form onSubmit={handleSubmit(onSubmit)}>
     <div className="mb-3">
       <label className="inputlabeltext">*Name</label>
@@ -168,7 +200,7 @@ const [previousColorPrice, setPreviousColorPrice] = useState(0);
     </div>
 
     <div className="mb-3">
-      <label className="inputlabeltext">*Email</label>
+      <label className="inputlabeltext">*Email (write same email as used to login)</label>
       <input
         type="email"
         className="form-control"

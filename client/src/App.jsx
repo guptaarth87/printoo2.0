@@ -10,6 +10,12 @@ import Signup from './components/Auth/Signup';
 import FeedbackForm from './components/FeedbackForm/FeedbackForm';
 import OrderDetails from './pages/OrderDetails';
 import Navbar from './components/Navbar/Navbar';
+import DocumentTools from './components/DocumentTools/DocumentTools';
+import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
+import PrivacyPolicy from './components/TermsAndConditions/PrivacyPolicy';
+import CancellationAndShipping from './components/TermsAndConditions/CancellationAndShippping';
+import Aboutus from './pages/Aboutus';
+import PDFUploader from './PDFUploader';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -24,7 +30,14 @@ function App() {
         <Route path='/' element={<Index/>}/>
         <Route path='/bookorder' element={<BookingPage/>}/>
         <Route path='/feedback' element={<FeedbackForm/>}/>
+        <Route path ='/testpdf' element={<PDFUploader/>}/>
         <Route path='/previosorders' element={<OrderDetails/>}/>
+        <Route path='/tools' element={<DocumentTools/>}/>
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/cancellation-and-shipping" element={<CancellationAndShipping />} />
+        <Route path="/about-us" element={<Aboutus/>} />
+        {/* <Route path="/contact-us" element={<ContactUs />} /> */}
       </Routes>
       <Footer/>
     </>

@@ -33,10 +33,22 @@ const Navbar = () => {
               <Link className="nav-link" to="/bookorder">Book Order</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/feedback">Feedback</Link>
+              <Link className="nav-link" to="/feedback">Contact us</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/previosorders">Previous Orders</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/about-us">About us</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/terms-and-conditions">Terms & Conditions</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/privacy-policy">Privacy Policy</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/cancellation-and-shipping">Cancellation and shipping</Link>
             </li>
             {!userEmail ? (
               <>

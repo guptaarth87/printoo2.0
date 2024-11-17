@@ -12,11 +12,12 @@ const Dashboard = () => {
   const [orders, setOrders] = useState([]);
   const [feedback, setFeedback] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showOrderDetails, setShowOrderDetails] = useState(null); // State for showing order preview
   const itemsPerPage = 10;
 
   useEffect(() => {
     fetchOrders();
-    fetchFeedback(); // Fetch feedback data for the feedback tab
+    fetchFeedback();
   }, []);
 
   const fetchOrders = async () => {
@@ -44,7 +45,7 @@ const Dashboard = () => {
     try {
       await axios.delete(`${API_URL}/orders/deleteorder/${id}`);
       toast.success('Order deleted successfully');
-      fetchOrders(); // Refresh orders after deletion
+      fetchOrders();
     } catch (error) {
       toast.error('Failed to delete order');
     }
@@ -57,10 +58,18 @@ const Dashboard = () => {
     try {
       await axios.patch(`${API_URL}/orders/toggledelivered/${id}`, { delivered: !currentStatus });
       toast.success('Order status updated');
-      fetchOrders(); // Refresh orders after updating
+      fetchOrders();
     } catch (error) {
       toast.error('Failed to update order status');
     }
+  };
+
+  const handlePreviewOrderDetails = (order) => {
+    setShowOrderDetails(order); // Set the selected order for preview
+  };
+
+  const handleClosePreview = () => {
+    setShowOrderDetails(null); // Close the preview
   };
 
   const indexOfLastOrder = currentPage * itemsPerPage;
@@ -88,84 +97,107 @@ const Dashboard = () => {
 
       {activeTab === 'orders' && (
         <div className="table-responsive">
-          <div className="table-responsive">
-  <table className="table table-striped table-bordered">
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>Phone No</th>
-        <th>Delivery Slot</th>
-        <th>Type of Order</th>
-        <th>Address</th>
-        <th>Price</th>
-        <th>Created At</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {currentOrders.map(order => (
-        <tr key={order._id}>
-          <td>{order.email}</td>
-          <td>{order.phoneno}</td>
-          <td>{order.deliveryslot}</td>
-          <td>{order.typeOfOrder}</td>
-          <td>{order.address}</td>
-          <td>{order.price}</td>
-          <td>{new Date(order.createdAt).toLocaleString()}</td>
-          <td>
-            <button
-              className="btn btn-warning btn-sm mr-2"
-              onClick={() => handleToggleDelivered(order._id, order.delivered)}
-            >
-              {order.delivered ? 'Mark as Undelivered' : 'Mark as Delivered'}
-            </button><br></br>
-            <button
-              className="btn btn-danger btn-sm"
-              onClick={() => handleDeleteOrder(order._id)}
-            >
-              Delete
-            </button>
-
-            <br></br>
-            {order.color_fileurl && (
-                      <a href={order.color_fileurl} target="_blank" className="btn btn-success btn-sm ms-2" download>Download Color</a>
+          <table className="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Phone No</th>
+                <th>Delivery Slot</th>
+                <th>Type of Order</th>
+                <th>Address</th>
+                <th>Price</th>
+                <th>Created At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentOrders.map((order) => (
+                <tr key={order._id}>
+                  <td>{order.email}</td>
+                  <td>{order.phoneno}</td>
+                  <td>{order.deliveryslot}</td>
+                  <td>{order.typeOfOrder}</td>
+                  <td>{order.address}</td>
+                  <td>{order.price}</td>
+                  <td>{new Date(order.createdAt).toLocaleString()}</td>
+                  <td>
+                    <button
+                      className="btn btn-warning btn-sm mr-2"
+                      onClick={() => handleToggleDelivered(order._id, order.delivered)}
+                    >
+                      {order.delivered ? 'Mark as Undelivered' : 'Mark as Delivered'}
+                    </button><br />
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleDeleteOrder(order._id)}
+                    >
+                      Delete
+                    </button><br />
+                    {order.color_fileurl && (
+                      <button className="btn btn-success btn-sm ms-2" onClick={() => handlePreviewOrderDetails(order)}>Preview Color</button>
                     )}
-            <br></br>
-            {order.black_and_white_fileurl && (
-                      <a href={order.black_and_white_fileurl} target="_blank" className="btn btn-secondary btn-sm ms-2" download>Download B&W</a>)}
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+                    <br />
+                    {order.black_and_white_fileurl && (
+                      <button className="btn btn-secondary btn-sm ms-2" onClick={() => handlePreviewOrderDetails(order)}>Preview B/W</button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-  {/* Pagination Controls */}
-  <nav>
-    <ul className="pagination justify-content-center">
-      {Array.from({ length: totalPages }, (_, index) => (
-        
-        <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-          <button className="page-link" onClick={() => setCurrentPage(index + 1)}>
-            {index + 1}
-          </button>
-
-        </li>
-       
-        
-      ))}
-    </ul>
-  </nav>
-</div>
-
+          {/* Pagination Controls */}
+          <nav>
+            <ul className="pagination justify-content-center">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                  <button className="page-link" onClick={() => setCurrentPage(index + 1)}>
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       )}
 
       {activeTab === 'users' && <Users />}
-
       {activeTab === 'feedback' && <Feedback feedback={feedback} />}
-
       {activeTab === 'orderFilters' && <OrderFilters />}
-      
+
+      {/* Order Preview Modal */}
+      {showOrderDetails && (
+        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Order Preview</h5>
+                <button className="close" onClick={handleClosePreview}>&times;</button>
+              </div>
+              <div className="modal-body">
+                <p><strong>Order Name:</strong> {showOrderDetails.name}</p>
+                <p><strong>Email:</strong> {showOrderDetails.email}</p>
+                <p><strong>Phone No:</strong> {showOrderDetails.phoneno}</p>
+                <p><strong>Address:</strong> {showOrderDetails.address}</p>
+                <p><strong>Type of Order:</strong> {showOrderDetails.typeOfOrder}</p>
+                <p><strong>Price:</strong> {showOrderDetails.price}</p>
+                <p><strong>Delivery Slot:</strong> {showOrderDetails.deliveryslot}</p>
+                <p><strong>Created At:</strong> {new Date(showOrderDetails.createdAt).toLocaleString()}</p>
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={handleClosePreview}>Close</button>
+                {showOrderDetails.color_fileurl && (
+                  <a href={showOrderDetails.color_fileurl} target="_blank" className="btn btn-success" download>Download Color</a>
+                )}
+                {showOrderDetails.black_and_white_fileurl && (
+                  <a href={showOrderDetails.black_and_white_fileurl} target="_blank" className="btn btn-secondary" download>Download B/W</a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <ToastContainer />
     </div>
   );

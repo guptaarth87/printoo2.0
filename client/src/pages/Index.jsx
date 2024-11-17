@@ -4,6 +4,7 @@ import BookingButtons from '../components/ButtonsSection/BookingButtons'
 import PriceChart from '../components/PriceChart/PriceChart'
 import AvailableSlots from '../components/AvailableSlots/AvailableSlots'
 import FaqAccordion from '../components/Faqs/FaqAccordion'
+import FeedbackForm from '../components/FeedbackForm/FeedbackForm'
 
 export default function Index() {
   return (
@@ -23,6 +24,7 @@ export default function Index() {
         </div>
       </div>
       <FaqAccordion/>
+      <FeedbackForm/>
     </div>
     </div>
     </>
